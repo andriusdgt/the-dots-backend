@@ -8,23 +8,22 @@ public class PointCoordinates {
 
     private String id;
 
-    @NotNull(message = "{com.andriusdgt.thedotsbackend.model.PointCoordinates.listId.NotNull.message}")
-    private String listId;
-
     @Range(min = -5000, max = 5000)
     private short x;
 
     @Range(min = -5000, max = 5000)
     private short y;
 
+    @NotNull(message = "{com.andriusdgt.thedotsbackend.model.PointCoordinates.listId.NotNull.message}")
+    private String listId;
+
     public PointCoordinates() {
     }
 
-    public PointCoordinates(String id, String listId, short x, short y) {
-        this.id = id;
-        this.listId = listId;
+    public PointCoordinates(short x, short y, String listId) {
         this.x = x;
         this.y = y;
+        this.listId = listId;
     }
 
     public String getId() {

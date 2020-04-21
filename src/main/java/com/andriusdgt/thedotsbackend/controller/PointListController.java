@@ -1,5 +1,6 @@
 package com.andriusdgt.thedotsbackend.controller;
 
+import com.andriusdgt.thedotsbackend.model.PointCoordinates;
 import com.andriusdgt.thedotsbackend.repository.PointCoordinatesRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Validator;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.AbstractMap;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/point/list")
@@ -28,9 +32,19 @@ public class PointListController {
         this.pointCoordinatesRepository = pointCoordinatesRepository;
     }
 
-    @PostMapping
-    public void add(@RequestParam("file") MultipartFile pointsFile) throws IOException {
-        System.out.println(IOUtils.toString(pointsFile.getInputStream(), StandardCharsets.UTF_8));
+    @PostMapping("/list-id/{listId}")
+    public void add(@PathVariable String listId, @RequestParam("file") MultipartFile pointsFile) throws IOException {
+        Set<PointCoordinates> pointList = IOUtils
+                .readLines(pointsFile.getInputStream(), StandardCharsets.UTF_8)
+                .stream()
+                .sequential()
+                .filter(line -> line.matches("[-]*\\d+ [-]*\\d+"))
+                .limit(pointCoordinatesListSize)
+                .map(line -> new AbstractMap.SimpleEntry<>(line.split(" ")[0], line.split(" ")[1]))
+                .map(pair -> new PointCoordinates(Short.parseShort(pair.getKey()), Short.parseShort(pair.getValue()), listId))
+                .collect(Collectors.toSet());
+
+        pointCoordinatesRepository.saveAll(pointList);
     }
 
 }
