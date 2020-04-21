@@ -17,7 +17,8 @@ public class PointCoordinates {
     @Range(min = -5000, max = 5000)
     private short y;
 
-    public PointCoordinates(){}
+    public PointCoordinates() {
+    }
 
     public PointCoordinates(String id, String listId, short x, short y) {
         this.id = id;
@@ -41,4 +42,5 @@ public class PointCoordinates {
     public short getY() {
         return y;
     }
+
 }
