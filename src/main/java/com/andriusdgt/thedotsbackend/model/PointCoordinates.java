@@ -1,9 +1,16 @@
 package com.andriusdgt.thedotsbackend.model;
 
+import com.andriusdgt.thedotsbackend.annotation.Range;
+
 public class PointCoordinates {
 
-    private final short x;
-    private final short y;
+    @Range(min = -5000, max = 5000)
+    private short x;
+
+    @Range(min = -5000, max = 5000)
+    private short y;
+
+    public PointCoordinates(){}
 
     public PointCoordinates(short x, short y) {
         this.x = x;
