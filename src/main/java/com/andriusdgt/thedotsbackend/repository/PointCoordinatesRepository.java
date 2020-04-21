@@ -8,5 +8,9 @@ import java.util.List;
 
 @Component
 public interface PointCoordinatesRepository extends MongoRepository<PointCoordinates, String> {
+
     List<PointCoordinates> findAll();
+    List<PointCoordinates> findByListId(String listId);
+    void deleteByListId(String listId);
+
 }

@@ -2,7 +2,14 @@ package com.andriusdgt.thedotsbackend.model;
 
 import com.andriusdgt.thedotsbackend.annotation.Range;
 
+import javax.validation.constraints.NotNull;
+
 public class PointCoordinates {
+
+    private String id;
+
+    @NotNull(message = "{com.andriusdgt.thedotsbackend.model.PointCoordinates.listId.NotNull.message}")
+    private String listId;
 
     @Range(min = -5000, max = 5000)
     private short x;
@@ -12,9 +19,19 @@ public class PointCoordinates {
 
     public PointCoordinates(){}
 
-    public PointCoordinates(short x, short y) {
+    public PointCoordinates(String id, String listId, short x, short y) {
+        this.id = id;
+        this.listId = listId;
         this.x = x;
         this.y = y;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getListId() {
+        return listId;
     }
 
     public short getX() {
@@ -24,5 +41,4 @@ public class PointCoordinates {
     public short getY() {
         return y;
     }
-
 }

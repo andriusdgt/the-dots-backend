@@ -13,6 +13,7 @@ import javax.validation.Validator;
 import java.util.List;
 
 @RestController
+@RequestMapping("/point")
 public class PointController {
 
     long pointCoordinatesListSize;
@@ -29,7 +30,7 @@ public class PointController {
         this.pointCoordinatesRepository = pointCoordinatesRepository;
     }
 
-    @PostMapping("/add-point")
+    @PutMapping
     public void add(@RequestBody PointCoordinates point) {
         if (!validator.validate(point).isEmpty())
             throw new ValidationException(validator.validate(point).iterator().next().getMessage());
@@ -44,9 +45,29 @@ public class PointController {
         pointCoordinatesRepository.save(point);
     }
 
-    @GetMapping("/get-points")
+    @GetMapping
     public List<PointCoordinates> findAll() {
         return pointCoordinatesRepository.findAll();
+    }
+
+    @GetMapping("/list-id/{listId}")
+    public List<PointCoordinates> findBy(@PathVariable String listId) {
+        return pointCoordinatesRepository.findByListId(listId);
+    }
+
+    @DeleteMapping
+    public void deleteAll() {
+        pointCoordinatesRepository.deleteAll();
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        pointCoordinatesRepository.deleteById(id);
+    }
+
+    @DeleteMapping("/list-id/{listId}")
+    public void deleteBy(@PathVariable String listId) {
+        pointCoordinatesRepository.deleteByListId(listId);
     }
 
 }
