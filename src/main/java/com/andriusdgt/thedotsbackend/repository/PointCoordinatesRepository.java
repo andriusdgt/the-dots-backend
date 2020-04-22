@@ -11,6 +11,7 @@ public interface PointCoordinatesRepository extends MongoRepository<PointCoordin
 
     List<PointCoordinates> findAll();
     List<PointCoordinates> findByListId(String listId);
+    long countByListId(String listId);
     void deleteByListId(String listId);
 
 }

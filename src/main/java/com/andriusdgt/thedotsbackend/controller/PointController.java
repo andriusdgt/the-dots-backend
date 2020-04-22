@@ -38,8 +38,8 @@ public class PointController {
         if (pointCoordinatesRepository.exists(Example.of(point)))
             throw new DuplicatePointException();
 
-        long pointCount = pointCoordinatesRepository.count();
-        if (pointCount >= pointCoordinatesListSize)
+        long pointCount = pointCoordinatesRepository.countByListId(point.getListId());
+        if (pointCount + 1 > pointCoordinatesListSize)
             throw new TooManyPointsException(pointCount);
 
         pointCoordinatesRepository.save(point);

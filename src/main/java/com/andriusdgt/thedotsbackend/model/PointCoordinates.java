@@ -26,6 +26,26 @@ public class PointCoordinates {
         this.listId = listId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PointCoordinates)) return false;
+
+        PointCoordinates that = (PointCoordinates) o;
+
+        if (getX() != that.getX()) return false;
+        if (getY() != that.getY()) return false;
+        return getListId().equals(that.getListId());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getX();
+        result = 31 * result + (int) getY();
+        result = 31 * result + getListId().hashCode();
+        return result;
+    }
+
     public String getId() {
         return id;
     }

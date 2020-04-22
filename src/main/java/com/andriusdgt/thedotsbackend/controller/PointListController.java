@@ -10,8 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Validator;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.AbstractMap;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,18 +32,35 @@ public class PointListController {
     }
 
     @PostMapping("/list-id/{listId}")
-    public void add(@PathVariable String listId, @RequestParam("file") MultipartFile pointsFile) throws IOException {
-        Set<PointCoordinates> pointList = IOUtils
+    public Set<String> add(@PathVariable String listId, @RequestParam("file") MultipartFile pointsFile) throws IOException {
+        Set<String> errors = new HashSet<>();
+        List<PointCoordinates> pointList = IOUtils
                 .readLines(pointsFile.getInputStream(), StandardCharsets.UTF_8)
                 .stream()
-                .sequential()
-                .filter(line -> line.matches("[-]*\\d+ [-]*\\d+"))
-                .limit(pointCoordinatesListSize)
+                .peek(line -> {
+                    if (!line.matches("[-]?\\d+ [-]?\\d+"))
+                        errors.add("Found incorrectly formatted lines, ignoring");
+                })
+                .filter(line -> line.matches("[-]?\\d+ [-]?\\d+"))
                 .map(line -> new AbstractMap.SimpleEntry<>(line.split(" ")[0], line.split(" ")[1]))
                 .map(pair -> new PointCoordinates(Short.parseShort(pair.getKey()), Short.parseShort(pair.getValue()), listId))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+
+        int pointCount = pointList.size();
+
+        pointList = pointList.stream().distinct().collect(Collectors.toList());
+        List<PointCoordinates> existingPoints = pointCoordinatesRepository.findByListId(listId);
+        pointList.removeAll(existingPoints);
+        if (pointList.size() != pointCount)
+            errors.add("Found duplicates, only distinct ones will be preserved");
+
+        if (pointList.size() + existingPoints.size() > pointCoordinatesListSize) {
+            errors.add("New points exceeds list size limit of " + pointCoordinatesListSize + ", not all points will be imported");
+            pointList = pointList.subList(0, (int) pointCoordinatesListSize - existingPoints.size());
+        }
 
         pointCoordinatesRepository.saveAll(pointList);
+        return errors;
     }
 
 }
