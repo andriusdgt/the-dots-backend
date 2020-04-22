@@ -44,6 +44,11 @@ public class PointListController {
                 .filter(line -> line.matches("[-]?\\d+ [-]?\\d+"))
                 .map(line -> new AbstractMap.SimpleEntry<>(line.split(" ")[0], line.split(" ")[1]))
                 .map(pair -> new PointCoordinates(Short.parseShort(pair.getKey()), Short.parseShort(pair.getValue()), listId))
+                .peek(point -> {
+                    if (!validator.validate(point).isEmpty())
+                        errors.add(validator.validate(point).iterator().next().getMessage());
+                })
+                .filter(point -> validator.validate(point).isEmpty())
                 .collect(Collectors.toList());
 
         int pointCount = pointList.size();
