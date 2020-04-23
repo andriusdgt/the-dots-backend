@@ -11,6 +11,9 @@ public class PointList implements Serializable {
     @NotNull(message = "{com.andriusdgt.thedotsbackend.model.PointList.name.NotNull.message}")
     private String name;
 
+    public PointList() {
+    }
+
     public PointList(@NotNull String id, @NotNull String name) {
         this.id = id;
         this.name = name;

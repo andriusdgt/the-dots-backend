@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.ValidationException;
 import javax.validation.Validator;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -76,17 +77,20 @@ public class PointListController {
         return errors;
     }
 
-    @PutMapping("/list-id/{listId}/name/{name}")
-    public void createList(@PathVariable String listId, @PathVariable String name) {
-        PointList pointListWithDuplicateName = pointListRepository.findByName(name);
-        if (pointListWithDuplicateName != null && !Objects.equals(pointListWithDuplicateName.getId(), listId))
+    @PutMapping
+    public void createList(@RequestBody PointList pointList) {
+        if (!validator.validate(pointList).isEmpty())
+            throw new ValidationException(validator.validate(pointList).iterator().next().getMessage());
+
+        PointList pointListWithDuplicateName = pointListRepository.findByName(pointList.getName());
+        if (pointListWithDuplicateName != null && !Objects.equals(pointListWithDuplicateName.getId(), pointList.getId()))
             pointCoordinatesRepository.deleteByListId(pointListWithDuplicateName.getId());
         if (pointListWithDuplicateName != null)
             pointListRepository.delete(pointListWithDuplicateName);
         pointListRepository
-                .findById(listId)
+                .findById(pointList.getId())
                 .ifPresent(list -> pointListRepository.delete(list));
-        pointListRepository.save(new PointList(listId, name));
+        pointListRepository.save(pointList);
     }
 
     @GetMapping
