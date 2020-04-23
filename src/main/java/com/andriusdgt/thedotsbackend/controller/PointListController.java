@@ -43,7 +43,7 @@ public class PointListController {
     @PostMapping("/list-id/{listId}")
     public Set<String> add(@PathVariable String listId, @RequestParam("file") MultipartFile pointsFile) throws IOException {
         Set<String> errors = new HashSet<>();
-        List<PointCoordinates> pointList = IOUtils
+        List<PointCoordinates> points = IOUtils
                 .readLines(pointsFile.getInputStream(), StandardCharsets.UTF_8)
                 .stream()
                 .peek(line -> {
@@ -60,20 +60,20 @@ public class PointListController {
                 .filter(point -> validator.validate(point).isEmpty())
                 .collect(Collectors.toList());
 
-        int pointCount = pointList.size();
+        int pointCount = points.size();
 
-        pointList = pointList.stream().distinct().collect(Collectors.toList());
+        points = points.stream().distinct().collect(Collectors.toList());
         List<PointCoordinates> existingPoints = pointCoordinatesRepository.findByListId(listId);
-        pointList.removeAll(existingPoints);
-        if (pointList.size() != pointCount)
+        points.removeAll(existingPoints);
+        if (points.size() != pointCount)
             errors.add("Found duplicates, only distinct ones will be preserved");
 
-        if (pointList.size() + existingPoints.size() > pointCoordinatesListSize) {
+        if (points.size() + existingPoints.size() > pointCoordinatesListSize) {
             errors.add("New points exceeds list size limit of " + pointCoordinatesListSize + ", not all points will be imported");
-            pointList = pointList.subList(0, (int) pointCoordinatesListSize - existingPoints.size());
+            points = points.subList(0, (int) pointCoordinatesListSize - existingPoints.size());
         }
 
-        pointCoordinatesRepository.saveAll(pointList);
+        pointCoordinatesRepository.saveAll(points);
         return errors;
     }
 
