@@ -1,7 +1,9 @@
 package com.andriusdgt.thedotsbackend.controller;
 
 import com.andriusdgt.thedotsbackend.model.PointCoordinates;
+import com.andriusdgt.thedotsbackend.model.PointList;
 import com.andriusdgt.thedotsbackend.repository.PointCoordinatesRepository;
+import com.andriusdgt.thedotsbackend.repository.PointListRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -23,15 +25,18 @@ public class PointListController {
     long pointCoordinatesListSize;
     Validator validator;
     PointCoordinatesRepository pointCoordinatesRepository;
+    PointListRepository pointListRepository;
 
     public PointListController(
             @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
             Validator validator,
-            PointCoordinatesRepository pointCoordinatesRepository
+            PointCoordinatesRepository pointCoordinatesRepository,
+            PointListRepository pointListRepository
     ) {
         this.pointCoordinatesListSize = pointCoordinatesListSize;
         this.validator = validator;
         this.pointCoordinatesRepository = pointCoordinatesRepository;
+        this.pointListRepository = pointListRepository;
     }
 
     @PostMapping("/list-id/{listId}")
@@ -71,6 +76,24 @@ public class PointListController {
         return errors;
     }
 
+    @PutMapping("/list-id/{listId}/name/{name}")
+    public void createList(@PathVariable String listId, @PathVariable String name) {
+        PointList pointListWithDuplicateName = pointListRepository.findByName(name);
+        if (pointListWithDuplicateName != null && !Objects.equals(pointListWithDuplicateName.getId(), listId))
+            pointCoordinatesRepository.deleteByListId(pointListWithDuplicateName.getId());
+        if (pointListWithDuplicateName != null)
+            pointListRepository.delete(pointListWithDuplicateName);
+        pointListRepository
+                .findById(listId)
+                .ifPresent(list -> pointListRepository.delete(list));
+        pointListRepository.save(new PointList(listId, name));
+    }
+
+    @GetMapping
+    public List<PointList> getLists() {
+        return pointListRepository.findAll();
+    }
+
     @GetMapping("/list-id/{listId}")
     public ResponseEntity<byte[]> downloadPointListTxt(@PathVariable String listId) throws IOException {
         HttpHeaders headers = new HttpHeaders();
@@ -90,6 +113,17 @@ public class PointListController {
                                 )
                         )
                 );
+    }
+
+    @DeleteMapping("/list-id/{listId}")
+    public void deleteList(@PathVariable String listId) {
+        pointListRepository.deleteById(listId);
+        pointCoordinatesRepository.deleteByListId(listId);
+    }
+
+    @DeleteMapping
+    public void deleteAll() {
+        pointListRepository.deleteAll();
     }
 
 }

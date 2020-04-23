@@ -66,7 +66,7 @@ public class PointController {
     }
 
     @DeleteMapping("/list-id/{listId}")
-    public void deleteBy(@PathVariable String listId) {
+    public void deletePointsFromList(@PathVariable String listId) {
         pointCoordinatesRepository.deleteByListId(listId);
     }
 
