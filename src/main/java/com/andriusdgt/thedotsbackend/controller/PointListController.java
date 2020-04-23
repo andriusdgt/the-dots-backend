@@ -4,6 +4,9 @@ import com.andriusdgt.thedotsbackend.model.PointCoordinates;
 import com.andriusdgt.thedotsbackend.repository.PointCoordinatesRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,6 +69,27 @@ public class PointListController {
 
         pointCoordinatesRepository.saveAll(pointList);
         return errors;
+    }
+
+    @GetMapping("/list-id/{listId}")
+    public ResponseEntity<byte[]> downloadPointListTxt(@PathVariable String listId) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"point list %s.txt\"", listId));
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(
+                        IOUtils.toByteArray(
+                                IOUtils.toInputStream(pointCoordinatesRepository
+                                        .findByListId(listId)
+                                        .stream()
+                                        .map(PointCoordinates::toString)
+                                        .collect(Collectors.joining("\n")), StandardCharsets.UTF_8
+                                )
+                        )
+                );
     }
 
 }

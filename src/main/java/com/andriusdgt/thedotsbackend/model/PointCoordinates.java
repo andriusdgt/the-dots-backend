@@ -3,8 +3,9 @@ package com.andriusdgt.thedotsbackend.model;
 import com.andriusdgt.thedotsbackend.annotation.Range;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-public class PointCoordinates {
+public class PointCoordinates implements Serializable {
 
     private String id;
 
@@ -44,6 +45,11 @@ public class PointCoordinates {
         result = 31 * result + (int) getY();
         result = 31 * result + getListId().hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return getX() + " " + getY();
     }
 
     public String getId() {
