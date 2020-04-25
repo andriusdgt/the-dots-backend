@@ -133,13 +133,13 @@ public class PointListController {
                 for (int secondPointIndex = firstPointIndex + 1; secondPointIndex < pointGroup.size(); secondPointIndex++) {
                     short x = pointGroup.get(firstPointIndex).getX();
                     short sideLength = (short) Math.abs(pointGroup.get(secondPointIndex).getY() - pointGroup.get(firstPointIndex).getY());
-                    PointCoordinates firstEdge = pointGroup.get(firstPointIndex);
-                    PointCoordinates secondEdge = pointGroup.get(secondPointIndex);
-                    PointCoordinates thirdEdge = new PointCoordinates((short) (x + sideLength), firstEdge.getY(), listId);
-                    PointCoordinates fourthEdge = new PointCoordinates((short) (x + sideLength), secondEdge.getY(), listId);
+                    PointCoordinates firstVertex = pointGroup.get(firstPointIndex);
+                    PointCoordinates secondVertex = pointGroup.get(secondPointIndex);
+                    PointCoordinates thirdVertex = new PointCoordinates((short) (x + sideLength), firstVertex.getY(), listId);
+                    PointCoordinates fourthVertex = new PointCoordinates((short) (x + sideLength), secondVertex.getY(), listId);
                     if (xAxisPoints.containsKey((short) (x + sideLength))
-                        && xAxisPoints.get((short) (x + sideLength)).containsAll(new HashSet<>(Set.of(thirdEdge, fourthEdge))))
-                        squares.add(Arrays.asList(firstEdge, secondEdge, thirdEdge, fourthEdge));
+                        && xAxisPoints.get((short) (x + sideLength)).containsAll(new HashSet<>(Set.of(thirdVertex, fourthVertex))))
+                        squares.add(Arrays.asList(firstVertex, secondVertex, thirdVertex, fourthVertex));
                 }
             }
         });
