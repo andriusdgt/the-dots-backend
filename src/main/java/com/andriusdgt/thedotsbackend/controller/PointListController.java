@@ -29,10 +29,10 @@ public class PointListController {
     PointListRepository pointListRepository;
 
     public PointListController(
-            @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
-            Validator validator,
-            PointCoordinatesRepository pointCoordinatesRepository,
-            PointListRepository pointListRepository
+        @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
+        Validator validator,
+        PointCoordinatesRepository pointCoordinatesRepository,
+        PointListRepository pointListRepository
     ) {
         this.pointCoordinatesListSize = pointCoordinatesListSize;
         this.validator = validator;
@@ -44,21 +44,21 @@ public class PointListController {
     public Set<String> add(@PathVariable String listId, @RequestParam("file") MultipartFile pointsFile) throws IOException {
         Set<String> errors = new HashSet<>();
         List<PointCoordinates> points = IOUtils
-                .readLines(pointsFile.getInputStream(), StandardCharsets.UTF_8)
-                .stream()
-                .peek(line -> {
-                    if (!line.matches("[-]?\\d+ [-]?\\d+"))
-                        errors.add("Found incorrectly formatted lines, ignoring");
-                })
-                .filter(line -> line.matches("[-]?\\d+ [-]?\\d+"))
-                .map(line -> new AbstractMap.SimpleEntry<>(line.split(" ")[0], line.split(" ")[1]))
-                .map(pair -> new PointCoordinates(Short.parseShort(pair.getKey()), Short.parseShort(pair.getValue()), listId))
-                .peek(point -> {
-                    if (!validator.validate(point).isEmpty())
-                        errors.add(validator.validate(point).iterator().next().getMessage());
-                })
-                .filter(point -> validator.validate(point).isEmpty())
-                .collect(Collectors.toList());
+            .readLines(pointsFile.getInputStream(), StandardCharsets.UTF_8)
+            .stream()
+            .peek(line -> {
+                if (!line.matches("[-]?\\d+ [-]?\\d+"))
+                    errors.add("Found incorrectly formatted lines, ignoring");
+            })
+            .filter(line -> line.matches("[-]?\\d+ [-]?\\d+"))
+            .map(line -> new AbstractMap.SimpleEntry<>(line.split(" ")[0], line.split(" ")[1]))
+            .map(pair -> new PointCoordinates(Short.parseShort(pair.getKey()), Short.parseShort(pair.getValue()), listId))
+            .peek(point -> {
+                if (!validator.validate(point).isEmpty())
+                    errors.add(validator.validate(point).iterator().next().getMessage());
+            })
+            .filter(point -> validator.validate(point).isEmpty())
+            .collect(Collectors.toList());
 
         int pointCount = points.size();
 
@@ -88,8 +88,8 @@ public class PointListController {
         if (pointListWithDuplicateName != null)
             pointListRepository.delete(pointListWithDuplicateName);
         pointListRepository
-                .findById(pointList.getId())
-                .ifPresent(list -> pointListRepository.delete(list));
+            .findById(pointList.getId())
+            .ifPresent(list -> pointListRepository.delete(list));
         pointListRepository.save(pointList);
     }
 
@@ -105,18 +105,18 @@ public class PointListController {
         headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"point list %s.txt\"", listId));
 
         return ResponseEntity
-                .ok()
-                .headers(headers)
-                .body(
-                        IOUtils.toByteArray(
-                                IOUtils.toInputStream(pointCoordinatesRepository
-                                        .findByListId(listId)
-                                        .stream()
-                                        .map(PointCoordinates::toString)
-                                        .collect(Collectors.joining("\n")), StandardCharsets.UTF_8
-                                )
-                        )
-                );
+            .ok()
+            .headers(headers)
+            .body(
+                IOUtils.toByteArray(
+                    IOUtils.toInputStream(pointCoordinatesRepository
+                        .findByListId(listId)
+                        .stream()
+                        .map(PointCoordinates::toString)
+                        .collect(Collectors.joining("\n")), StandardCharsets.UTF_8
+                    )
+                )
+            );
     }
 
     @DeleteMapping("/list-id/{listId}")
