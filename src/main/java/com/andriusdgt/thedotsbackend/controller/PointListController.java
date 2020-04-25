@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/point/list")
 public class PointListController {
@@ -117,6 +119,32 @@ public class PointListController {
                     )
                 )
             );
+    }
+
+    @GetMapping("/list-id/{listId}/squares")
+    public List<List<PointCoordinates>> findSquares(@PathVariable String listId) {
+        List<List<PointCoordinates>> squares = new ArrayList<>();
+        SortedSet<PointCoordinates> points = new TreeSet<>(pointCoordinatesRepository.findByListId(listId));
+        Map<Short, List<PointCoordinates>> xAxisPoints =
+            points.stream().collect(Collectors.groupingBy(PointCoordinates::getX, toList()));
+
+        xAxisPoints.values().stream().forEach(pointGroup -> {
+            for (int firstPointIndex = 0; firstPointIndex < pointGroup.size() - 1; firstPointIndex++) {
+                for (int secondPointIndex = firstPointIndex + 1; secondPointIndex < pointGroup.size(); secondPointIndex++) {
+                    short x = pointGroup.get(firstPointIndex).getX();
+                    short sideLength = (short) Math.abs(pointGroup.get(secondPointIndex).getY() - pointGroup.get(firstPointIndex).getY());
+                    PointCoordinates firstEdge = pointGroup.get(firstPointIndex);
+                    PointCoordinates secondEdge = pointGroup.get(secondPointIndex);
+                    PointCoordinates thirdEdge = new PointCoordinates((short) (x + sideLength), firstEdge.getY(), listId);
+                    PointCoordinates fourthEdge = new PointCoordinates((short) (x + sideLength), secondEdge.getY(), listId);
+                    if (xAxisPoints.containsKey((short) (x + sideLength))
+                        && xAxisPoints.get((short) (x + sideLength)).containsAll(new HashSet<>(Set.of(thirdEdge, fourthEdge))))
+                        squares.add(Arrays.asList(firstEdge, secondEdge, thirdEdge, fourthEdge));
+                }
+            }
+        });
+
+        return squares;
     }
 
     @DeleteMapping("/list-id/{listId}")

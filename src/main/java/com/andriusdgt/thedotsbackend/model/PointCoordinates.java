@@ -5,7 +5,7 @@ import com.andriusdgt.thedotsbackend.annotation.Range;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-public class PointCoordinates implements Serializable {
+public class PointCoordinates implements Serializable, Comparable<PointCoordinates> {
 
     private String id;
 
@@ -48,6 +48,14 @@ public class PointCoordinates implements Serializable {
     }
 
     @Override
+    public int compareTo(PointCoordinates other) {
+        int result = Short.compare(this.x, other.x);
+        if (result == 0)
+            result = Short.compare(this.y, other.y);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return getX() + " " + getY();
     }
@@ -67,5 +75,4 @@ public class PointCoordinates implements Serializable {
     public short getY() {
         return y;
     }
-
 }
