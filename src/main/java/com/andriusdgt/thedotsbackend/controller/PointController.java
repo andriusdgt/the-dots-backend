@@ -6,6 +6,7 @@ import com.andriusdgt.thedotsbackend.model.PointCoordinates;
 import com.andriusdgt.thedotsbackend.repository.PointCoordinatesRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
@@ -21,9 +22,9 @@ public class PointController {
     PointCoordinatesRepository pointCoordinatesRepository;
 
     public PointController(
-            @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
-            Validator validator,
-            PointCoordinatesRepository pointCoordinatesRepository
+        @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
+        Validator validator,
+        PointCoordinatesRepository pointCoordinatesRepository
     ) {
         this.pointCoordinatesListSize = pointCoordinatesListSize;
         this.validator = validator;
@@ -50,9 +51,16 @@ public class PointController {
         return pointCoordinatesRepository.findAll();
     }
 
-    @GetMapping("/list-id/{listId}")
-    public List<PointCoordinates> findBy(@PathVariable String listId) {
-        return pointCoordinatesRepository.findByListId(listId);
+    @GetMapping("/list-id/{listId}/count")
+    public long getPointCount(@PathVariable String listId) {
+        return pointCoordinatesRepository.countByListId(listId);
+    }
+
+    @GetMapping("/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}")
+    public List<PointCoordinates> findBy(
+        @PathVariable String listId, @PathVariable int pageIndex, @PathVariable int pageSize
+    ) {
+        return pointCoordinatesRepository.findByListId(listId, PageRequest.of(pageIndex, pageSize));
     }
 
     @DeleteMapping
