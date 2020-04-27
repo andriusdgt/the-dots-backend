@@ -89,9 +89,10 @@ public class PointListController {
             pointCoordinatesRepository.deleteByListId(pointListWithDuplicateName.getId());
         if (pointListWithDuplicateName != null)
             pointListRepository.delete(pointListWithDuplicateName);
-        pointListRepository
-            .findById(pointList.getId())
-            .ifPresent(list -> pointListRepository.delete(list));
+        if (pointList.getId() != null)
+            pointListRepository
+                .findById(pointList.getId())
+                .ifPresent(list -> pointListRepository.delete(list));
         pointListRepository.save(pointList);
     }
 

@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 public class PointList implements Serializable {
 
-    @NotNull(message = "{com.andriusdgt.thedotsbackend.model.PointCoordinates.listId.NotNull.message}")
     private String id;
 
     @NotNull(message = "{com.andriusdgt.thedotsbackend.model.PointList.name.NotNull.message}")
