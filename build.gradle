@@ -7,6 +7,10 @@ plugins {
 sourceCompatibility = '11'
 
 dependencies {
+    compile project(':the-dots-api')
+    compile project(':the-dots-core')
+    compile project(':the-dots-mongo-plugin')
+    
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.data:spring-data-mongodb'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

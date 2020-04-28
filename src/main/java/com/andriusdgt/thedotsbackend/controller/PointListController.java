@@ -1,9 +1,9 @@
 package com.andriusdgt.thedotsbackend.controller;
 
-import com.andriusdgt.thedotsbackend.model.PointCoordinates;
-import com.andriusdgt.thedotsbackend.model.PointList;
-import com.andriusdgt.thedotsbackend.repository.PointCoordinatesRepository;
-import com.andriusdgt.thedotsbackend.repository.PointListRepository;
+import com.andriusdgt.thedots.api.model.PointCoordinates;
+import com.andriusdgt.thedots.api.model.PointList;
+import com.andriusdgt.thedots.mongoplugin.repository.PointCoordinatesRepository;
+import com.andriusdgt.thedots.mongoplugin.repository.PointListRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;

@@ -1,9 +1,9 @@
 package com.andriusdgt.thedotsbackend.controller;
 
-import com.andriusdgt.thedotsbackend.exception.DuplicatePointException;
-import com.andriusdgt.thedotsbackend.exception.TooManyPointsException;
-import com.andriusdgt.thedotsbackend.model.PointCoordinates;
-import com.andriusdgt.thedotsbackend.repository.PointCoordinatesRepository;
+import com.andriusdgt.thedots.api.model.PointCoordinates;
+import com.andriusdgt.thedots.core.exception.DuplicatePointException;
+import com.andriusdgt.thedots.core.exception.TooManyPointsException;
+import com.andriusdgt.thedots.mongoplugin.repository.PointCoordinatesRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +17,9 @@ import java.util.List;
 @RequestMapping("/point")
 public class PointController {
 
-    long pointCoordinatesListSize;
-    Validator validator;
-    PointCoordinatesRepository pointCoordinatesRepository;
+    private long pointCoordinatesListSize;
+    private Validator validator;
+    private PointCoordinatesRepository pointCoordinatesRepository;
 
     public PointController(
         @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
