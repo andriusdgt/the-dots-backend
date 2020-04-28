@@ -4,8 +4,6 @@ plugins {
     id 'java'
 }
 
-group = 'com.andriusdgt'
-version = '1.0.0'
 sourceCompatibility = '11'
 
 dependencies {
