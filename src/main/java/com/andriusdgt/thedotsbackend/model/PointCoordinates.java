@@ -9,7 +9,6 @@ public class PointCoordinates implements Serializable, Comparable<PointCoordinat
 
     private String id;
 
-
     @Range(min = -5000, max = 5000)
     private short x;
 
