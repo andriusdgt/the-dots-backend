@@ -8,11 +8,6 @@ group = 'com.andriusdgt'
 version = '1.0.0'
 sourceCompatibility = '11'
 
-repositories {
-    mavenLocal()
-    jcenter()
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.data:spring-data-mongodb'
