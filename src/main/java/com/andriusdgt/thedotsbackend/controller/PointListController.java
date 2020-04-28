@@ -25,10 +25,10 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/point/list")
 public class PointListController {
 
-    long pointCoordinatesListSize;
-    Validator validator;
-    PointCoordinatesRepository pointCoordinatesRepository;
-    PointListRepository pointListRepository;
+    private long pointCoordinatesListSize;
+    private Validator validator;
+    private PointCoordinatesRepository pointCoordinatesRepository;
+    private PointListRepository pointListRepository;
 
     public PointListController(
         @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
