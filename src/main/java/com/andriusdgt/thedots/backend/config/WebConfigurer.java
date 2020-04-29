@@ -1,4 +1,4 @@
-package com.andriusdgt.thedotsbackend.config;
+package com.andriusdgt.thedots.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

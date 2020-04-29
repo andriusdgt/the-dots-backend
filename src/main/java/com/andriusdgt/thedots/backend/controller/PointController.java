@@ -1,4 +1,4 @@
-package com.andriusdgt.thedotsbackend.controller;
+package com.andriusdgt.thedots.backend.controller;
 
 import com.andriusdgt.thedots.api.model.PointCoordinates;
 import com.andriusdgt.thedots.core.exception.DuplicatePointException;
@@ -15,11 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/point")
-public class PointController {
+final class PointController {
 
-    private long pointCoordinatesListSize;
-    private Validator validator;
-    private PointCoordinatesRepository pointCoordinatesRepository;
+    private final long pointCoordinatesListSize;
+    private final Validator validator;
+    private final PointCoordinatesRepository pointCoordinatesRepository;
 
     public PointController(
         @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,

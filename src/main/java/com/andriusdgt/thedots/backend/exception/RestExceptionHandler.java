@@ -1,4 +1,4 @@
-package com.andriusdgt.thedotsbackend.exception;
+package com.andriusdgt.thedots.backend.exception;
 
 import com.andriusdgt.thedots.api.model.ApiError;
 import com.andriusdgt.thedots.core.exception.DuplicatePointException;
@@ -15,7 +15,7 @@ import javax.validation.ValidationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
-class RestExceptionHandler extends ResponseEntityExceptionHandler {
+final class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ValidationException.class, DuplicatePointException.class, TooManyPointsException.class})
     ResponseEntity<ApiError> handleValidationException(Exception ex) {

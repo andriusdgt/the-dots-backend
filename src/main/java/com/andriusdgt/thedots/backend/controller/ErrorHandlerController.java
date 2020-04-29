@@ -1,4 +1,4 @@
-package com.andriusdgt.thedotsbackend.controller;
+package com.andriusdgt.thedots.backend.controller;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class ErrorHandlerController implements ErrorController {
+final class ErrorHandlerController implements ErrorController {
 
     private static final String ERROR_PATH = "/error";
 

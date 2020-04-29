@@ -1,4 +1,4 @@
-package com.andriusdgt.thedotsbackend.controller;
+package com.andriusdgt.thedots.backend.controller;
 
 import com.andriusdgt.thedots.api.model.PointCoordinates;
 import com.andriusdgt.thedots.api.model.PointList;
@@ -23,12 +23,12 @@ import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/point/list")
-public class PointListController {
+final class PointListController {
 
-    private long pointCoordinatesListSize;
-    private Validator validator;
-    private PointCoordinatesRepository pointCoordinatesRepository;
-    private PointListRepository pointListRepository;
+    private final long pointCoordinatesListSize;
+    private final Validator validator;
+    private final PointCoordinatesRepository pointCoordinatesRepository;
+    private final PointListRepository pointListRepository;
 
     public PointListController(
         @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
@@ -92,7 +92,7 @@ public class PointListController {
         if (pointList.getId() != null)
             pointListRepository
                 .findById(pointList.getId())
-                .ifPresent(list -> pointListRepository.delete(list));
+                .ifPresent(pointListRepository::delete);
         pointListRepository.save(pointList);
     }
 
@@ -129,6 +129,7 @@ public class PointListController {
         Map<Short, List<PointCoordinates>> xAxisPoints =
             points.stream().collect(Collectors.groupingBy(PointCoordinates::getX, toList()));
 
+        //noinspection SimplifyStreamApiCallChains
         xAxisPoints.values().stream().forEach(pointGroup -> {
             for (int firstPointIndex = 0; firstPointIndex < pointGroup.size() - 1; firstPointIndex++) {
                 for (int secondPointIndex = firstPointIndex + 1; secondPointIndex < pointGroup.size(); secondPointIndex++) {
