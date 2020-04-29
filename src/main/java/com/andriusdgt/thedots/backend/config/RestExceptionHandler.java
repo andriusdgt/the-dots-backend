@@ -1,4 +1,4 @@
-package com.andriusdgt.thedots.backend.exception;
+package com.andriusdgt.thedots.backend.config;
 
 import com.andriusdgt.thedots.api.model.ApiError;
 import com.andriusdgt.thedots.core.exception.DuplicatePointException;
