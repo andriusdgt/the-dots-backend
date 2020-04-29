@@ -2,8 +2,8 @@ package com.andriusdgt.thedots.backend.controller;
 
 import com.andriusdgt.thedots.core.model.Point;
 import com.andriusdgt.thedots.core.model.PointList;
-import com.andriusdgt.thedots.mongoadapter.repository.PointRepository;
-import com.andriusdgt.thedots.mongoadapter.repository.PointListRepository;
+import com.andriusdgt.thedots.core.repository.PointListRepository;
+import com.andriusdgt.thedots.core.repository.PointRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -153,11 +153,6 @@ final class PointListController {
     public void deleteList(@PathVariable String listId) {
         pointListRepository.deleteById(listId);
         pointRepository.deleteByListId(listId);
-    }
-
-    @DeleteMapping
-    public void deleteAll() {
-        pointListRepository.deleteAll();
     }
 
 }

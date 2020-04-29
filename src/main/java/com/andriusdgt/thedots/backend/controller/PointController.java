@@ -1,12 +1,10 @@
 package com.andriusdgt.thedots.backend.controller;
 
-import com.andriusdgt.thedots.core.model.Point;
 import com.andriusdgt.thedots.core.exception.DuplicatePointException;
 import com.andriusdgt.thedots.core.exception.TooManyPointsException;
-import com.andriusdgt.thedots.mongoadapter.repository.PointRepository;
+import com.andriusdgt.thedots.core.model.Point;
+import com.andriusdgt.thedots.core.repository.PointRepository;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
@@ -36,7 +34,7 @@ final class PointController {
         if (!validator.validate(point).isEmpty())
             throw new ValidationException(validator.validate(point).iterator().next().getMessage());
 
-        if (pointRepository.exists(Example.of(point)))
+        if (pointRepository.exists(point))
             throw new DuplicatePointException();
 
         long pointCount = pointRepository.countByListId(point.getListId());
@@ -46,26 +44,14 @@ final class PointController {
         pointRepository.save(point);
     }
 
-    @GetMapping
-    public List<Point> findAll() {
-        return pointRepository.findAll();
-    }
-
     @GetMapping("/list-id/{listId}/count")
     public long getPointCount(@PathVariable String listId) {
         return pointRepository.countByListId(listId);
     }
 
     @GetMapping("/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}")
-    public List<Point> findBy(
-        @PathVariable String listId, @PathVariable int pageIndex, @PathVariable int pageSize
-    ) {
-        return pointRepository.findByListId(listId, PageRequest.of(pageIndex, pageSize));
-    }
-
-    @DeleteMapping
-    public void deleteAll() {
-        pointRepository.deleteAll();
+    public List<Point> findBy(@PathVariable String listId, @PathVariable int pageIndex, @PathVariable int pageSize) {
+        return pointRepository.findByListId(listId, pageIndex, pageSize);
     }
 
     @DeleteMapping("/{id}")
