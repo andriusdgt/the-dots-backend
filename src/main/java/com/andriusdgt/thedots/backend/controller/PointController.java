@@ -1,9 +1,9 @@
 package com.andriusdgt.thedots.backend.controller;
 
-import com.andriusdgt.thedots.api.model.PointCoordinates;
+import com.andriusdgt.thedots.api.model.Point;
 import com.andriusdgt.thedots.core.exception.DuplicatePointException;
 import com.andriusdgt.thedots.core.exception.TooManyPointsException;
-import com.andriusdgt.thedots.mongoplugin.repository.PointCoordinatesRepository;
+import com.andriusdgt.thedots.mongoplugin.repository.PointRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
@@ -17,65 +17,65 @@ import java.util.List;
 @RequestMapping("/point")
 final class PointController {
 
-    private final long pointCoordinatesListSize;
+    private final long pointListSize;
     private final Validator validator;
-    private final PointCoordinatesRepository pointCoordinatesRepository;
+    private final PointRepository pointRepository;
 
     public PointController(
-        @Value("${POINT_COORDINATES_LIST_SIZE}") long pointCoordinatesListSize,
+        @Value("${POINT_LIST_SIZE}") long pointListSize,
         Validator validator,
-        PointCoordinatesRepository pointCoordinatesRepository
+        PointRepository pointRepository
     ) {
-        this.pointCoordinatesListSize = pointCoordinatesListSize;
+        this.pointListSize = pointListSize;
         this.validator = validator;
-        this.pointCoordinatesRepository = pointCoordinatesRepository;
+        this.pointRepository = pointRepository;
     }
 
     @PutMapping
-    public void add(@RequestBody PointCoordinates point) {
+    public void add(@RequestBody Point point) {
         if (!validator.validate(point).isEmpty())
             throw new ValidationException(validator.validate(point).iterator().next().getMessage());
 
-        if (pointCoordinatesRepository.exists(Example.of(point)))
+        if (pointRepository.exists(Example.of(point)))
             throw new DuplicatePointException();
 
-        long pointCount = pointCoordinatesRepository.countByListId(point.getListId());
-        if (pointCount + 1 > pointCoordinatesListSize)
+        long pointCount = pointRepository.countByListId(point.getListId());
+        if (pointCount + 1 > pointListSize)
             throw new TooManyPointsException(pointCount);
 
-        pointCoordinatesRepository.save(point);
+        pointRepository.save(point);
     }
 
     @GetMapping
-    public List<PointCoordinates> findAll() {
-        return pointCoordinatesRepository.findAll();
+    public List<Point> findAll() {
+        return pointRepository.findAll();
     }
 
     @GetMapping("/list-id/{listId}/count")
     public long getPointCount(@PathVariable String listId) {
-        return pointCoordinatesRepository.countByListId(listId);
+        return pointRepository.countByListId(listId);
     }
 
     @GetMapping("/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}")
-    public List<PointCoordinates> findBy(
+    public List<Point> findBy(
         @PathVariable String listId, @PathVariable int pageIndex, @PathVariable int pageSize
     ) {
-        return pointCoordinatesRepository.findByListId(listId, PageRequest.of(pageIndex, pageSize));
+        return pointRepository.findByListId(listId, PageRequest.of(pageIndex, pageSize));
     }
 
     @DeleteMapping
     public void deleteAll() {
-        pointCoordinatesRepository.deleteAll();
+        pointRepository.deleteAll();
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
-        pointCoordinatesRepository.deleteById(id);
+        pointRepository.deleteById(id);
     }
 
     @DeleteMapping("/list-id/{listId}")
     public void deletePointsFromList(@PathVariable String listId) {
-        pointCoordinatesRepository.deleteByListId(listId);
+        pointRepository.deleteByListId(listId);
     }
 
 }

@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/mongo https://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
     <bean id="pointProperties" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-        <property name="location" value="classpath:point_coordinates.properties"/>
+        <property name="location" value="classpath:point.properties"/>
     </bean>
 
     <mongo:repositories base-package="com.andriusdgt.thedots.mongoplugin.repository"/>
