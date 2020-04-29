@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
 @ImportResource("classpath:context/context.xml")
-public class TheDotsBackendApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(TheDotsBackendApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }
