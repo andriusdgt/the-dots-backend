@@ -3,7 +3,7 @@ package com.andriusdgt.thedots.backend.controller;
 import com.andriusdgt.thedots.api.model.Point;
 import com.andriusdgt.thedots.core.exception.DuplicatePointException;
 import com.andriusdgt.thedots.core.exception.TooManyPointsException;
-import com.andriusdgt.thedots.mongoplugin.repository.PointRepository;
+import com.andriusdgt.thedots.mongoadapter.repository.PointRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;

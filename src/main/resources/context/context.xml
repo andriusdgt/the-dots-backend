@@ -8,6 +8,6 @@
         <property name="location" value="classpath:point.properties"/>
     </bean>
 
-    <mongo:repositories base-package="com.andriusdgt.thedots.mongoplugin.repository"/>
+    <mongo:repositories base-package="com.andriusdgt.thedots.mongoadapter.repository"/>
 
 </beans>
