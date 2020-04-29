@@ -1,7 +1,7 @@
 package com.andriusdgt.thedots.backend.controller;
 
-import com.andriusdgt.thedots.api.model.Point;
-import com.andriusdgt.thedots.api.model.PointList;
+import com.andriusdgt.thedots.core.model.Point;
+import com.andriusdgt.thedots.core.model.PointList;
 import com.andriusdgt.thedots.mongoadapter.repository.PointRepository;
 import com.andriusdgt.thedots.mongoadapter.repository.PointListRepository;
 import org.apache.commons.io.IOUtils;

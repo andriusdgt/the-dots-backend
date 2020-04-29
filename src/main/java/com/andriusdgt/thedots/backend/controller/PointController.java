@@ -1,6 +1,6 @@
 package com.andriusdgt.thedots.backend.controller;
 
-import com.andriusdgt.thedots.api.model.Point;
+import com.andriusdgt.thedots.core.model.Point;
 import com.andriusdgt.thedots.core.exception.DuplicatePointException;
 import com.andriusdgt.thedots.core.exception.TooManyPointsException;
 import com.andriusdgt.thedots.mongoadapter.repository.PointRepository;
