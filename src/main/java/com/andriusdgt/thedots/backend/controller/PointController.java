@@ -27,12 +27,12 @@ final class PointController {
     }
 
     @PutMapping
-    public void add(@RequestBody Point point) {
+    public void create(@RequestBody Point point) {
         pointService.create(point, pointListSizeLimit);
     }
 
     @GetMapping("/list-id/{listId}/count")
-    public long getPointCount(@PathVariable String listId) {
+    public long getCount(@PathVariable String listId) {
         return pointRepository.countByListId(listId);
     }
 

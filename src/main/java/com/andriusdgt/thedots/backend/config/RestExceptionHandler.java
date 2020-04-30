@@ -1,6 +1,6 @@
 package com.andriusdgt.thedots.backend.config;
 
-import com.andriusdgt.thedots.core.model.ApiError;
+import com.andriusdgt.thedots.backend.model.ApiError;
 import com.andriusdgt.thedots.core.exception.DuplicatePointException;
 import com.andriusdgt.thedots.core.exception.TooManyPointsException;
 import org.springframework.core.Ordered;
