@@ -1,8 +1,6 @@
 package com.andriusdgt.thedots.backend.controller;
 
-import com.andriusdgt.thedots.core.model.Point;
-import com.andriusdgt.thedots.core.model.PointList;
-import com.andriusdgt.thedots.core.model.Warning;
+import com.andriusdgt.thedots.core.model.*;
 import com.andriusdgt.thedots.core.repository.PointListRepository;
 import com.andriusdgt.thedots.core.repository.PointRepository;
 import com.andriusdgt.thedots.core.service.PointListService;
@@ -75,7 +73,7 @@ final class PointListController {
     }
 
     @GetMapping("/list-id/{listId}/squares")
-    public List<List<Point>> findSquares(@PathVariable String listId) {
+    public List<Square> findSquares(@PathVariable String listId) {
         return pointListService.findSquares(listId);
     }
 
