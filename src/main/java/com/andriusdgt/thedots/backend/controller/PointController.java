@@ -48,7 +48,7 @@ final class PointController {
     ) {
         if (sortDirection == null)
             return pointRepository.findByListId(listId, pageIndex, pageSize);
-        return pointRepository.findByListId(listId, pageIndex, pageSize, sortDirection);
+        return pointRepository.findByListIdOrderByXAndY(listId, pageIndex, pageSize, sortDirection);
     }
 
     @DeleteMapping("/{id}")
