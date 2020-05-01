@@ -36,9 +36,19 @@ final class PointController {
         return pointRepository.countByListId(listId);
     }
 
-    @GetMapping("/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}")
-    public List<Point> findBy(@PathVariable String listId, @PathVariable int pageIndex, @PathVariable int pageSize) {
-        return pointRepository.findByListId(listId, pageIndex, pageSize);
+    @GetMapping(path = {
+        "/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}",
+        "/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}/{sortDirection:asc|desc}"
+    })
+    public List<Point> findBy(
+        @PathVariable String listId,
+        @PathVariable int pageIndex,
+        @PathVariable int pageSize,
+        @PathVariable(required = false) String sortDirection
+    ) {
+        if (sortDirection == null)
+            return pointRepository.findByListId(listId, pageIndex, pageSize);
+        return pointRepository.findByListId(listId, pageIndex, pageSize, sortDirection);
     }
 
     @DeleteMapping("/{id}")
