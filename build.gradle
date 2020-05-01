@@ -1,13 +1,18 @@
 plugins {
     id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+repositories {
+    jcenter()
 }
 
 sourceCompatibility = '11'
 
 dependencies {
-    compile project(':the-dots-core')
-    compile project(':the-dots-mongo-adapter')
+    implementation project(':the-dots-core')
+    runtimeOnly project(':the-dots-mongo-adapter')
     
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.data:spring-data-mongodb'
@@ -16,4 +21,11 @@ dependencies {
     }
 
     implementation 'commons-io:commons-io:2.6'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
 }
