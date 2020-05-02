@@ -68,7 +68,7 @@ public class PointListControllerTest {
     }
 
     @Test
-    public void createsAPointList() {
+    public void createsPointList() {
         PointList pointList = new PointList("listId", "name");
 
         pointListController.create(pointList);
@@ -110,7 +110,7 @@ public class PointListControllerTest {
     }
 
     @Test
-    public void deletesAPointList() {
+    public void deletesPointList() {
         pointListController.delete("listId");
 
         verify(pointListRepository).deleteById("listId");

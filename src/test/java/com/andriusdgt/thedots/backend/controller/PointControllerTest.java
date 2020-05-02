@@ -35,7 +35,7 @@ public class PointControllerTest {
     }
 
     @Test
-    public void createsAPoint() {
+    public void createsPoint() {
         Point point = new Point(10, 20, "listId");
 
         pointController.create(point);
@@ -77,7 +77,7 @@ public class PointControllerTest {
     }
 
     @Test
-    public void deletesAPoint() {
+    public void deletesPoint() {
         pointController.delete("pointId");
 
         verify(pointRepository).deleteById("pointId");
