@@ -101,15 +101,6 @@ public class PointListControllerTest {
     }
 
     @Test
-    public void findsSquares() {
-        List<Square> squares =
-            Collections.singletonList(new Square(new Point(10, -10, "listId"), new Point(10, 10, "listId")));
-        doReturn(squares).when(pointListService).findSquares("listId");
-
-        assertEquals(squares, pointListController.findSquares("listId"));
-    }
-
-    @Test
     public void deletesPointList() {
         pointListController.delete("listId");
 

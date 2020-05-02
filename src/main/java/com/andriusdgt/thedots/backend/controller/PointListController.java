@@ -72,11 +72,6 @@ final class PointListController {
             .body(IOUtils.toByteArray(IOUtils.toInputStream(pointListService.getPoints(listId), UTF_8)));
     }
 
-    @GetMapping("/list-id/{listId}/squares")
-    public List<Square> findSquares(@PathVariable String listId) {
-        return pointListService.findSquares(listId);
-    }
-
     @DeleteMapping("/list-id/{listId}")
     public void delete(@PathVariable String listId) {
         pointListRepository.deleteById(listId);
