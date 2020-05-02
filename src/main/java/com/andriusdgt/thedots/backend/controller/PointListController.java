@@ -43,7 +43,7 @@ final class PointListController {
 
     @PostMapping("/list-id/{listId}")
     public Set<Warning> addToList(
-        @PathVariable String listId, @RequestParam("file") MultipartFile pointsFile
+        @RequestParam("file") MultipartFile pointsFile, @PathVariable String listId
     ) throws IOException {
 
         return pointListService.create(
