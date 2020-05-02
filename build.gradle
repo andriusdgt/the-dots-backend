@@ -15,13 +15,18 @@ dependencies {
     implementation project(':the-dots-core')
     runtimeOnly project(':the-dots-mongo-adapter')
     
+    implementation 'commons-io:commons-io:2.6'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.data:spring-data-mongodb'
+
+    testImplementation 'org.mockito:mockito-inline:3.3.3'
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.3.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    implementation 'commons-io:commons-io:2.6'
 }
 
 mainClassName = 'com.andriusdgt.thedots.backend.Application'
