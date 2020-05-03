@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-public class SquareControllerTest {
+final class SquareControllerTest {
 
     @Mock
     private SquareService squareService;
@@ -24,12 +24,12 @@ public class SquareControllerTest {
     private SquareController squareController;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         squareController = new SquareController(squareService);
     }
 
     @Test
-    public void findsSquares() {
+    void findsSquares() {
         List<Square> squares =
             Collections.singletonList(new Square(new Point(10, -10, "listId"), new Point(10, 10, "listId")));
         doReturn(squares).when(squareService).find("listId");

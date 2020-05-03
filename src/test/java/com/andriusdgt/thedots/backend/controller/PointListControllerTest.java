@@ -27,7 +27,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PointListControllerTest {
+final class PointListControllerTest {
 
     @Mock
     private PointRepository pointRepository;
@@ -43,14 +43,14 @@ public class PointListControllerTest {
     static final long POINT_LIST_SIZE_LIMIT = 100L;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         pointListController =
             new PointListController(POINT_LIST_SIZE_LIMIT, pointRepository, pointListRepository, pointListService);
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void createsPointsFromFile() throws IOException {
+    void createsPointsFromFile() throws IOException {
         String fileContent = "10 -10\n-20 20\nsome text";
         MockMultipartFile file = new MockMultipartFile("file", "points.txt", "text/plain", fileContent.getBytes());
         HashSet<Object> expectedWarnings = new HashSet<>();
@@ -68,7 +68,7 @@ public class PointListControllerTest {
     }
 
     @Test
-    public void createsPointList() {
+    void createsPointList() {
         PointList pointList = new PointList("listId", "name");
 
         pointListController.create(pointList);
@@ -77,7 +77,7 @@ public class PointListControllerTest {
     }
 
     @Test
-    public void getsPointList() {
+    void getsPointList() {
         List<PointList> pointLists = Collections.singletonList(new PointList("listId", "name"));
         doReturn(pointLists).when(pointListRepository).findAll();
 
@@ -85,7 +85,7 @@ public class PointListControllerTest {
     }
 
     @Test
-    public void downloadsPointListTextFile() throws IOException {
+    void downloadsPointListTextFile() throws IOException {
         String points = "10 -10\n-20 30";
         doReturn(points).when(pointListService).getPoints("listId");
 
@@ -101,7 +101,7 @@ public class PointListControllerTest {
     }
 
     @Test
-    public void deletesPointList() {
+    void deletesPointList() {
         pointListController.delete("listId");
 
         verify(pointListRepository).deleteById("listId");

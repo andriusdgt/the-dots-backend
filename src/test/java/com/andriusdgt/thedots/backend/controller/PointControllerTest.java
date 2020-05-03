@@ -17,7 +17,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PointControllerTest {
+final class PointControllerTest {
 
     @Mock
     private PointRepository pointRepository;
@@ -30,12 +30,12 @@ public class PointControllerTest {
     static final long POINT_LIST_SIZE_LIMIT = 100L;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         pointController = new PointController(POINT_LIST_SIZE_LIMIT, pointRepository, pointService);
     }
 
     @Test
-    public void createsPoint() {
+    void createsPoint() {
         Point point = new Point(10, 20, "listId");
 
         pointController.create(point);
@@ -44,14 +44,14 @@ public class PointControllerTest {
     }
 
     @Test
-    public void getsPointCount() {
+    void getsPointCount() {
         doReturn(1L).when(pointRepository).countByListId("listId");
 
         assertEquals(1L, pointController.getCount("listId"));
     }
 
     @Test
-    public void getsPointsInPage() {
+    void getsPointsInPage() {
         int pageIndex = 3;
         int pageSize = 50;
         String listId = "listId";
@@ -64,7 +64,7 @@ public class PointControllerTest {
     }
 
     @Test
-    public void getsPointsInSortedPage() {
+    void getsPointsInSortedPage() {
         int pageIndex = 3;
         int pageSize = 50;
         String listId = "listId";
@@ -77,14 +77,14 @@ public class PointControllerTest {
     }
 
     @Test
-    public void deletesPoint() {
+    void deletesPoint() {
         pointController.delete("pointId");
 
         verify(pointRepository).deleteById("pointId");
     }
 
     @Test
-    public void deletesPointsByList() {
+    void deletesPointsByList() {
         pointController.deletePointsFromList("listId");
 
         verify(pointRepository).deleteByListId("listId");
