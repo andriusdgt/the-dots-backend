@@ -42,7 +42,7 @@ final class PointListController {
     }
 
     @PostMapping("/list-id/{listId}")
-    Set<Warning> addToList(
+    Set<Warning> create(
         @RequestParam("file") MultipartFile pointsFile, @PathVariable String listId
     ) throws IOException {
 

@@ -27,7 +27,7 @@ final class PointControllerTest {
 
     private PointController pointController;
 
-    static final long POINT_LIST_SIZE_LIMIT = 100L;
+    private static final long POINT_LIST_SIZE_LIMIT = 100L;
 
     @BeforeEach
     void setUp() {

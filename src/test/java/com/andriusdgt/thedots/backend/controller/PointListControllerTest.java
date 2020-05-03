@@ -57,7 +57,7 @@ final class PointListControllerTest {
         ArgumentCaptor<Stream<String>> streamCaptor = ArgumentCaptor.forClass(Stream.class);
         doReturn(expectedWarnings).when(pointListService).create(any(), eq("listId"), eq(POINT_LIST_SIZE_LIMIT));
 
-        Set<Warning> actualWarnings = pointListController.addToList(file, "listId");
+        Set<Warning> actualWarnings = pointListController.create(file, "listId");
 
         verify(pointListService).create(streamCaptor.capture(), eq("listId"), eq(POINT_LIST_SIZE_LIMIT));
         assertEquals(expectedWarnings, actualWarnings);
