@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -58,7 +59,13 @@ final class PointControllerTest {
         List<Point> expectedPoints = Collections.singletonList(new Point(10, -20, listId));
         doReturn(expectedPoints).when(pointRepository).findByListId(listId, pageIndex, pageSize);
 
-        List<Point> actualPoints = pointController.findBy(listId, pageIndex, pageSize, null);
+        List<Point> actualPoints = pointController.findPaginatedBy(
+            Map.of(
+                "listId", listId,
+                "pageIndex", String.valueOf(pageIndex),
+                "pageSize", String.valueOf(pageSize)
+            )
+        );
 
         assertEquals(expectedPoints, actualPoints);
     }
@@ -71,7 +78,14 @@ final class PointControllerTest {
         List<Point> expectedPoints = Collections.singletonList(new Point(10, -20, listId));
         doReturn(expectedPoints).when(pointRepository).findByListIdOrderByXAndY(listId, pageIndex, pageSize, "desc");
 
-        List<Point> actualPoints = pointController.findBy(listId, pageIndex, pageSize, "desc");
+        List<Point> actualPoints = pointController.findSortedPaginatedBy(
+            Map.of(
+                "listId", listId,
+                "pageIndex", String.valueOf(pageIndex),
+                "pageSize", String.valueOf(pageSize),
+                "sortDirection", "desc"
+            )
+        );
 
         assertEquals(expectedPoints, actualPoints);
     }

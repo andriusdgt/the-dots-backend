@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
+import static java.lang.Integer.parseInt;
 
 @RestController
 @RequestMapping("/point")
@@ -36,19 +39,23 @@ final class PointController {
         return pointRepository.countByListId(listId);
     }
 
-    @GetMapping(path = {
-        "/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}",
-        "/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}/{sortDirection:asc|desc}"
-    })
-    List<Point> findBy(
-        @PathVariable String listId,
-        @PathVariable int pageIndex,
-        @PathVariable int pageSize,
-        @PathVariable(required = false) String sortDirection
-    ) {
-        if (sortDirection == null)
-            return pointRepository.findByListId(listId, pageIndex, pageSize);
-        return pointRepository.findByListIdOrderByXAndY(listId, pageIndex, pageSize, sortDirection);
+    @GetMapping("/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}")
+    List<Point> findPaginatedBy(@PathVariable Map<String, String> pathVars) {
+        return pointRepository.findByListId(
+            pathVars.get("listId"),
+            parseInt(pathVars.get("pageIndex")),
+            parseInt(pathVars.get("pageSize"))
+        );
+    }
+
+    @GetMapping("/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}/{sortDirection:asc|desc}")
+    List<Point> findSortedPaginatedBy(@PathVariable Map<String, String> pathVars) {
+        return pointRepository.findByListIdOrderByXAndY(
+            pathVars.get("listId"),
+            parseInt(pathVars.get("pageIndex")),
+            parseInt(pathVars.get("pageSize")),
+            pathVars.get("sortDirection")
+        );
     }
 
     @DeleteMapping("/{id}")
