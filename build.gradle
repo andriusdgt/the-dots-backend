@@ -9,8 +9,6 @@ repositories {
     jcenter()
 }
 
-sourceCompatibility = '11'
-
 dependencies {
     implementation project(':the-dots-core')
     runtimeOnly project(':the-dots-mongo-adapter')
