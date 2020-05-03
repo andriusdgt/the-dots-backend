@@ -12,12 +12,12 @@ final class SquareController {
 
     private final SquareService squareService;
 
-    public SquareController(SquareService squareService) {
+    SquareController(SquareService squareService) {
         this.squareService = squareService;
     }
 
     @GetMapping("/list-id/{listId}")
-    public List<Square> find(@PathVariable String listId) {
+    List<Square> find(@PathVariable String listId) {
         return squareService.find(listId);
     }
 

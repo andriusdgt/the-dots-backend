@@ -16,7 +16,7 @@ final class PointController {
     private final PointRepository pointRepository;
     private final PointService pointService;
 
-    public PointController(
+    PointController(
         @Value("${POINT_LIST_SIZE_LIMIT}") long pointListSizeLimit,
         PointRepository pointRepository,
         PointService pointService
@@ -27,12 +27,12 @@ final class PointController {
     }
 
     @PutMapping
-    public void create(@RequestBody Point point) {
+    void create(@RequestBody Point point) {
         pointService.create(point, pointListSizeLimit);
     }
 
     @GetMapping("/list-id/{listId}/count")
-    public long getCount(@PathVariable String listId) {
+    long getCount(@PathVariable String listId) {
         return pointRepository.countByListId(listId);
     }
 
@@ -40,7 +40,7 @@ final class PointController {
         "/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}",
         "/list-id/{listId}/page-index/{pageIndex}/page-size/{pageSize}/{sortDirection:asc|desc}"
     })
-    public List<Point> findBy(
+    List<Point> findBy(
         @PathVariable String listId,
         @PathVariable int pageIndex,
         @PathVariable int pageSize,
@@ -52,12 +52,12 @@ final class PointController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
+    void delete(@PathVariable String id) {
         pointRepository.deleteById(id);
     }
 
     @DeleteMapping("/list-id/{listId}")
-    public void deletePointsFromList(@PathVariable String listId) {
+    void deletePointsFromList(@PathVariable String listId) {
         pointRepository.deleteByListId(listId);
     }
 

@@ -29,7 +29,7 @@ final class PointListController {
     private final PointListRepository pointListRepository;
     private final PointListService pointListService;
 
-    public PointListController(
+    PointListController(
         @Value("${POINT_LIST_SIZE_LIMIT}") long pointListSizeLimit,
         PointRepository pointRepository,
         PointListRepository pointListRepository,
@@ -42,7 +42,7 @@ final class PointListController {
     }
 
     @PostMapping("/list-id/{listId}")
-    public Set<Warning> addToList(
+    Set<Warning> addToList(
         @RequestParam("file") MultipartFile pointsFile, @PathVariable String listId
     ) throws IOException {
 
@@ -55,17 +55,17 @@ final class PointListController {
     }
 
     @PutMapping
-    public void create(@RequestBody PointList pointList) {
+    void create(@RequestBody PointList pointList) {
         pointListService.create(pointList);
     }
 
     @GetMapping
-    public List<PointList> get() {
+    List<PointList> get() {
         return pointListRepository.findAll();
     }
 
     @GetMapping("/list-id/{listId}")
-    public ResponseEntity<byte[]> downloadPointListTextFile(@PathVariable String listId) throws IOException {
+    ResponseEntity<byte[]> downloadPointListTextFile(@PathVariable String listId) throws IOException {
         return ResponseEntity
             .ok()
             .headers(createTextFileHeaders(listId))
@@ -73,7 +73,7 @@ final class PointListController {
     }
 
     @DeleteMapping("/list-id/{listId}")
-    public void delete(@PathVariable String listId) {
+    void delete(@PathVariable String listId) {
         pointListRepository.deleteById(listId);
         pointRepository.deleteByListId(listId);
     }
